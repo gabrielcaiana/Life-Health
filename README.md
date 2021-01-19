@@ -1,8 +1,9 @@
 # Life Healthy
 
-<br>
+
 ![](https://github.com/gabrielcaiana/Life-Health/blob/master/public/images/dashboard.PNG)
-<br>
+
+
 
 Template em Vue.js para o desenvolvimento front-end
 
