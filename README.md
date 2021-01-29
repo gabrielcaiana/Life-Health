@@ -1,5 +1,10 @@
 # Life Healthy
 
+
+![](https://github.com/gabrielcaiana/Life-Health/blob/master/public/images/dashboard.PNG)
+
+
+
 Template em Vue.js para o desenvolvimento front-end
 
 - Setup inicial
