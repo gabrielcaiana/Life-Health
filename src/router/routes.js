@@ -1,58 +1,46 @@
-import Home from '../views/public/Login.vue'
-import Register from "../views/public/Register.vue"
-import Index from "../views/private/Index.vue"
-
-import Dashboard from "../views/private/pages/Dashboard.vue"
-import Peso from "../views/private/pages/Peso.vue"
-import Alimentos from "../views/private/pages/Alimentos.vue"
-import Pressao_arterial from "../views/private/pages/Pressao_arterial.vue"
-import Atividades_fisicas from "../views/private/pages/Atividades_fisicas.vue"
-import Perfil from "../views/private/pages/Perfil.vue"
-
-
 export default [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: () => import('../views/public/Login.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: Register
+    component: () => import('../views/public/Register.vue')
   },
   {
-    path: '/index', component: Index,
+    path: '/index', component: () => import('../views/private/Index.vue'),
     children: [
       {
         path: '/dashboard',
         name: 'dashboard',
-        component: Dashboard
+        component: () => import('../views/private/pages/Dashboard.vue')
       },
       {
         path: '/peso',
         name: 'peso',
-        component: Peso
+        component: () => import('../views/private/pages/Peso.vue')
       },
       {
         path: '/alimentos',
         name: 'alimentos',
-        component: Alimentos
+        component: () => import('../views/private/pages/Alimentos.vue')
       },
       {
         path: '/pressao-arterial',
         name: 'pressao-arterial',
-        component: Pressao_arterial
+        component: () => import('../views/private/pages/Pressao_arterial.vue')
       },
       {
         path: '/atividades-fisicas',
         name: 'atividades-fisicas',
-        component: Atividades_fisicas
+        component: () => import('../views/private/pages/Atividades_fisicas.vue')
       },
       {
         path: '/perfil',
         name: 'perfil',
-        component: Perfil
+        component: () => import('../views/private/pages/Perfil.vue')
       }
     ]
   }
