@@ -10,7 +10,9 @@ export default [
     component: () => import('../views/public/Register.vue')
   },
   {
-    path: '/index', component: () => import('../views/private/Index.vue'),
+		path: '/index', 
+		name: 'index',
+		component: () => import('../views/private/Index.vue'),
     children: [
       {
         path: '/dashboard',
