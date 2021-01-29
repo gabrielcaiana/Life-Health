@@ -1,14 +1,14 @@
 <template>
   <validation-observer ref="observer" v-slot="{ invalid }">
-    <form @submit.prevent="submit">
+    <form @submit.prevent="efetuarLogin">
      
       <validation-provider v-slot="{ errors }" name="email" rules="required|email">
-        <v-text-field v-model="login.email" :error-messages="errors" label="E-mail" required></v-text-field>
+        <v-text-field v-model="user.email" :error-messages="errors" label="E-mail" required></v-text-field>
       </validation-provider>
 
       <validation-provider v-slot="{ errors }" name="password" rules="required">
         <v-text-field
-          v-model="login.password"
+          v-model="user.password"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required]"
           :type="show1 ? 'text' : 'password'"
@@ -19,6 +19,8 @@
           required
         ></v-text-field>
       </validation-provider>
+
+			<p class="red--text">{{massage}}</p>
 
       <v-btn class="mr-4 btn primary mt-4" type="submit" :disabled="invalid" depressed>
         Entrar
@@ -55,10 +57,11 @@ export default {
     ValidationObserver
   },
   data: () => ({
-    login: {
+    user: {
       password: '',
       email: ''
-    },
+		},
+		massage: '',
     menu: '',
     show1: false,
     rules: {
@@ -68,9 +71,16 @@ export default {
   }),
 
   methods: {
-    submit() {
+    efetuarLogin() {
       this.$refs.observer.validate()
-      console.log(this.login)
+			this.$store.dispatch("efetuarLogin", this.user)
+			.then(response => {
+				return this.$router.push({name: 'dashboard'})
+			})
+			.catch((err) => {
+				console.log(err.response.data.message)
+				this.massage = 'Usuário ou senha incorretos, tente novamente!'
+			})
     }
   }
 }

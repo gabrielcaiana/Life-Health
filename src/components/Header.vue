@@ -10,7 +10,7 @@
           </template>
 
           <v-list>
-            <v-list-item v-for="(item, index) in items" :key="`${item}-${index}`" :to="item.to" link>
+            <v-list-item @click="items.length -1 == index ? logout() : null"  v-for="(item, index) in items" :key="`${item}-${index}`" :to="item.to" link>
               <v-list-item-title v-text="item.text"></v-list-item-title>
             </v-list-item>
           </v-list>
@@ -93,10 +93,15 @@ export default {
       },
       {
         text: 'Sair',
-        to: '/'
       }
     ]
-  })
+	}),
+	methods: {
+		logout() {
+				this.$store.commit('DEFINE_LOGOUT')
+				this.$router.push({name: 'login'})		
+		}
+	}
 }
 </script>
 
