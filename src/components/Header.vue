@@ -8,7 +8,6 @@
               {{ text }}
             </v-btn>
           </template>
-
           <v-list>
             <v-list-item @click="items.length -1 == index ? logout() : null"  v-for="(item, index) in items" :key="`${item}-${index}`" :to="item.to" link>
               <v-list-item-title v-text="item.text"></v-list-item-title>
@@ -16,7 +15,6 @@
           </v-list>
         </v-menu>
       </v-row>
-
       <v-row>
         <v-col class="header__user" cols="12">
           <p class="header__user__name">
