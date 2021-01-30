@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { logoutMixin } from '@/mixins'
 import Card from '../components/commons/Card'
 export default {
   components: {
@@ -93,13 +94,10 @@ export default {
         text: 'Sair',
       }
     ]
-	}),
-	methods: {
-		logout() {
-				this.$store.commit('DEFINE_LOGOUT')
-				this.$router.push({name: 'login'})		
-		}
-	}
+  }),
+  mixins: [
+    logoutMixin
+  ]
 }
 </script>
 
