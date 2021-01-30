@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <SnackBar :configSnack="snackbar" />
     <transition name="slide" mode="out-in">
       <router-view />
     </transition>
@@ -7,11 +8,18 @@
 </template>
 
 <script>
+import SnackBar from './components/commons/SnackBar'
+import { mapState } from 'vuex'
 export default {
   name: 'App',
-  components: {},
+  components: {
+    SnackBar
+  },
   data() {
     return {}
+  },
+  computed: {
+    ...mapState(['snackbar'])
   }
 }
 </script>
