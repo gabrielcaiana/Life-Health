@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 const state = {
 	token: localStorage.getItem('token') || '',
-  user: {},
+  user: JSON.parse(localStorage.getItem('user')) || {},
   loading: false,
   snackbar: {
     visible: false,
@@ -29,7 +29,8 @@ const mutations = {
 	DEFINE_LOGOUT(state) {
 		state.token = null,
 		state.user = {},
-		localStorage.removeItem('token')
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
   },
 
   SET_LOADING(state, isVisible) {
@@ -60,6 +61,7 @@ const actions = {
         user: data.user
       })
       dispatch('setSnackBar', {msg: 'Login Efetuado com sucesso'})
+      localStorage.setItem('user', JSON.stringify(data.user))
       localStorage.setItem('token', data.access_token)
     } catch(err) {
       dispatch('setSnackBar', {msg: 'Email ou senha incorretos', success: false})
@@ -87,14 +89,16 @@ const actions = {
   }
 }
 
-// const getters = {
-// 	userLogin: state => Boolean(state.token)
-// }
+const getters = {
+	user: (state) => {
+    return state.user
+  }
+}
 
 export default new Vuex.Store({
 	state,
 	mutations,
 	actions,
-	// getters
+	getters
 })
 

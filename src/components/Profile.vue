@@ -130,6 +130,8 @@
 import { required, email, max } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
 
+import { mapGetters } from 'vuex'
+
 setInteractionMode('eager')
 
 extend('required', {
@@ -154,13 +156,13 @@ export default {
   },
   data: () => ({
     profile: {
-      name: 'Gabriel Caiana Guedes',
-      date: '1996-01-01',
-      email: 'gabrielcaianaguedes@gmail.com',
-      height: '1,85',
-      gender: null,
-      password: '123456',
-      newPassword: '123456789'
+      name: '',
+      date: '',
+      email: '',
+      height: '',
+      gender: '',
+      password: '',
+      newPassword: ''
     },
     menu: '',
     show1: false,
@@ -176,6 +178,16 @@ export default {
       this.$refs.observer.validate()
       console.log(this.register)
     }
-  }
+  },
+
+  computed: {
+      ...mapGetters(['user'])
+    },
+
+    mounted() {
+      this.profile = this.user
+      console.log(this.user)
+    }
+
 }
 </script>
