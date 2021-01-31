@@ -1,6 +1,6 @@
 <template>
   <validation-observer ref="observer" v-slot="{ invalid }">
-    <form @submit.prevent="submit">
+    <form @submit.prevent="register_user">
       <validation-provider v-slot="{ errors }" name="Name" rules="required|max:255">
         <v-text-field
           v-model="register.name"
@@ -129,9 +129,9 @@ export default {
   data: () => ({
     register: {
       name: '',
-      date: null,
+      date: '',
       height: '',
-      gender: null,
+      gender: '',
       password: '',
       email: ''
     },
@@ -144,9 +144,14 @@ export default {
   }),
 
   methods: {
-    submit() {
-      this.$refs.observer.validate()
-      console.log(this.register)
+    async register_user() {
+      try {
+        this.$refs.observer.validate()
+        await this.$store.dispatch('registerUser', this.register)
+        return this.$router.push({name: 'dashboard'})
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }

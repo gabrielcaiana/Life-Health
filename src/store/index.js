@@ -16,6 +16,11 @@ const state = {
 }
 
 const mutations = {
+  DEFINE_REGISTER(state, {token, user}) {
+    state.token = token,
+    state.user = user
+  },
+
 	DEFINE_USER_LOGIN(state, {token, user}) {
 		state.token = token,
 		state.user = user
@@ -62,6 +67,24 @@ const actions = {
       dispatch('setLoading', false)
     }
   },
+
+  async registerUser({commit, dispatch}, user) {
+    try {
+      dispatch('setLoading', true)
+      const { data } = await http.post('auth/register', user)
+      commit('DEFINE_REGISTER', {
+        token: data.access_token,
+        user: data.user
+      })
+      dispatch('setSnackBar', {msg: 'Usuário Cadastrado com Sucesso!'})
+      localStorage.setItem('token', data.access_token)
+    }catch(err) {
+      console.log(err)
+      dispatch('setSnackBar', {msg: 'Falha ao cadastrar o usuário', success: false})
+    } finally {
+      dispatch('setLoading', false)
+    }
+  }
 }
 
 // const getters = {
