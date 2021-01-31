@@ -61,6 +61,7 @@
 <script>
 import { logoutMixin } from '@/mixins'
 import Card from '../components/commons/Card'
+import { mapGetters } from 'vuex'
 export default {
   components: {
     Card
@@ -95,9 +96,17 @@ export default {
       }
     ]
   }),
+
   mixins: [
     logoutMixin
-  ]
+  ],
+  computed: {
+    ...mapGetters(['user'])
+  },
+
+  mounted() {
+    this.btns = [[this.user.name]]
+  }
 }
 </script>
 

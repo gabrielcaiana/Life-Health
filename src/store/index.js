@@ -80,6 +80,7 @@ const actions = {
       })
       dispatch('setSnackBar', {msg: 'Usuário Cadastrado com Sucesso!'})
       localStorage.setItem('token', data.access_token)
+      localStorage.setItem('user', JSON.stringify(data.user))
     }catch(err) {
       console.log(err)
       dispatch('setSnackBar', {msg: 'Falha ao cadastrar o usuário', success: false})

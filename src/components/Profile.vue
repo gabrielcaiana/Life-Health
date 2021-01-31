@@ -69,19 +69,33 @@
       <v-row>
         <v-col cols="12" sm="12" md="12" class="px-3">
           <p>Genêro</p>
-          <v-radio-group class="d-flex " row v-model="profile.gender" name="gender">
-            <v-radio label="Masculino" value="male"></v-radio>
-            <v-radio label="Feminino" value="feminine"></v-radio>
-            <v-radio label="Não binário" value="not-binary"></v-radio>
+
+          <v-radio-group v-model="profile.gender">
+            <template v-slot:label> </template>
+            <v-radio value="m">
+              <template v-slot:label>
+                <div>Masculino</div>
+              </template>
+            </v-radio>
+            <v-radio value="feminine">
+              <template v-slot:label>
+                <div>Feminino</div>
+              </template>
+            </v-radio>
+               <v-radio value="n">
+              <template v-slot:label>
+                <div>Não binário</div>
+              </template>
+            </v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
 
-      <v-divider></v-divider>
+      <!-- <v-divider></v-divider> -->
 
-      <h4 class="py-6">Alterar senha</h4>
+      <!-- <h4 class="py-6">Alterar senha</h4> -->
 
-      <v-row>
+      <!-- <v-row>
         <v-col cols="6" sm="6" md="6" class="px-3">
           <validation-provider v-slot="{ errors }" name="password" rules="required">
             <v-text-field
@@ -96,9 +110,9 @@
               required
             ></v-text-field>
           </validation-provider>
-        </v-col>
+        </v-col> -->
 
-        <v-col cols="6" sm="6" md="6" class="px-3">
+        <!-- <v-col cols="6" sm="6" md="6" class="px-3">
           <validation-provider v-slot="{ errors }" name="newPassword" rules="required">
             <v-text-field
               v-model="profile.newPassword"
@@ -112,8 +126,8 @@
               required
             ></v-text-field>
           </validation-provider>
-        </v-col>
-      </v-row>
+        </v-col> -->
+      <!-- </v-row> -->
 
       <v-btn class="mr-4 btn primary mt-4" type="submit" depressed>
         Salvar
@@ -181,13 +195,11 @@ export default {
   },
 
   computed: {
-      ...mapGetters(['user'])
-    },
+    ...mapGetters(['user'])
+  },
 
-    mounted() {
-      this.profile = this.user
-      console.log(this.user)
-    }
-
+  mounted() {
+    this.profile = this.user
+  }
 }
 </script>
