@@ -1,33 +1,31 @@
 <template>
-  <validation-observer ref="observer" v-slot="{ invalid }">
-    <form @submit.prevent="efetuarLogin">
-     
-      <validation-provider v-slot="{ errors }" name="email" rules="required|email">
-        <v-text-field v-model="user.email" :error-messages="errors" label="E-mail" required></v-text-field>
-      </validation-provider>
+  <div>
+    <validation-observer ref="observer" v-slot="{ invalid }">
+      <form @submit.prevent="efetuarLogin">
+        <validation-provider v-slot="{ errors }" name="email" rules="required|email">
+          <v-text-field v-model="user.email" :error-messages="errors" label="E-mail" required></v-text-field>
+        </validation-provider>
 
-      <validation-provider v-slot="{ errors }" name="password" rules="required">
-        <v-text-field
-          v-model="user.password"
-          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[rules.required]"
-          :type="show1 ? 'text' : 'password'"
-          name="email"
-          label="Senha"
-          @click:append="show1 = !show1"
-          :error-messages="errors"
-          required
-        ></v-text-field>
-      </validation-provider>
+        <validation-provider v-slot="{ errors }" name="password" rules="required">
+          <v-text-field
+            v-model="user.password"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="[rules.required]"
+            :type="show1 ? 'text' : 'password'"
+            name="email"
+            label="Senha"
+            @click:append="show1 = !show1"
+            :error-messages="errors"
+            required
+          ></v-text-field>
+        </validation-provider>
 
-			<p class="red--text">{{massage}}</p>
-
-      <v-btn class="mr-4 btn primary mt-4" type="submit" :disabled="invalid" depressed>
-        Entrar
-      </v-btn>
-
-    </form>
-  </validation-observer>
+        <v-btn class="mr-4 btn primary mt-4" type="submit" :disabled="invalid" depressed>
+          Entrar
+        </v-btn>
+      </form>
+    </validation-observer>
+  </div>
 </template>
 
 <script>
@@ -55,13 +53,13 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver
+
   },
   data: () => ({
     user: {
       password: '',
       email: ''
-		},
-		massage: '',
+    },
     menu: '',
     show1: false,
     rules: {
@@ -71,20 +69,19 @@ export default {
   }),
 
   methods: {
-    efetuarLogin() {
-      this.$refs.observer.validate()
-			this.$store.dispatch("efetuarLogin", this.user)
-			.then(response => {
-				return this.$router.push({name: 'dashboard'})
-			})
-			.catch((err) => {
-				console.log(err.response.data.message)
-				this.massage = 'Usuário ou senha incorretos, tente novamente!'
-			})
+    async efetuarLogin() {
+      try {
+        this.$refs.observer.validate()
+        await this.$store.dispatch('efetuarLogin', this.user)
+        return this.$router.push({ name: 'dashboard' })
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
 </script>
+
 
 <style lang="scss" scoped>
 .btn {

@@ -7,6 +7,7 @@ Vue.use(Vuex)
 const state = {
 	token: localStorage.getItem('token') || '',
   user: {},
+  loading: false,
   snackbar: {
     visible: false,
     color: '',
@@ -26,35 +27,41 @@ const mutations = {
 		localStorage.removeItem('token')
   },
 
+  SET_LOADING(state, isVisible) {
+    state.loading = isVisible
+  },
+
   SET_SNACK_BAR(state, {msg, success = true}) {
     state.snackbar = {color: success ? 'sucess' : 'error', msg, visible: true}
   }
 }
 
 const actions = {
-	efetuarLogin({ commit, dispatch }, user) {
-		return new Promise((resolve, reject) => {
-			http.post('auth/login', user)
-			.then((response) => {
-        dispatch('setSnackBar', {msg: 'Login Efetuado com sucesso'})
-				commit("DEFINE_USER_LOGIN",{
-					token: response.data.access_token,
-					user: response.data.user
-				})
-				localStorage.setItem('token', response.data.access_token)
-				resolve(response.data)
-			})
-			.catch((err) => {
-        dispatch('setSnackBar', {msg: 'Email ou senha incorretos', success: false})
-				console.log(err)
-				reject(err)
-			})
-		})
+
+  setLoading({commit}, isVisible) {
+    commit('SET_LOADING', isVisible)
   },
 
   setSnackBar({commit}, {msg, success = true}) {
     commit('SET_SNACK_BAR', {msg, success})
-  }
+  },
+
+	async efetuarLogin({ commit, dispatch }, user) {
+    try {
+      dispatch('setLoading', true)
+      const { data } = await http.post('auth/login', user)
+      commit("DEFINE_USER_LOGIN",{
+        token: data.access_token,
+        user: data.user
+      })
+      dispatch('setSnackBar', {msg: 'Login Efetuado com sucesso'})
+      localStorage.setItem('token', data.access_token)
+    } catch(err) {
+      dispatch('setSnackBar', {msg: 'Email ou senha incorretos', success: false})
+    } finally {
+      dispatch('setLoading', false)
+    }
+  },
 }
 
 // const getters = {
