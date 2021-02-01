@@ -12,7 +12,8 @@ const state = {
     visible: false,
     color: '',
     msg: ''
-  }
+	},
+	// height: []
 }
 
 const mutations = {
@@ -39,7 +40,11 @@ const mutations = {
 
   SET_SNACK_BAR(state, {msg, success = true}) {
     state.snackbar = {color: success ? 'sucess' : 'error', msg, visible: true}
-  }
+	},
+	
+	// GET_HEIGHT(state, {height}) {
+	// 	state.height = height
+	// }
 }
 
 const actions = {
@@ -88,21 +93,34 @@ const actions = {
     }
   },
 
-  // async updateUser({commit , dispatch}, user) {
-  //   try {
-  //     dispatch('setLoading', true)
-  //     const { data } = await http.put('auth/register', user)
-  //     commit('DEFINE_REGISTER', {
-  //       user: data.user
-  //     })
-  //     dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'})
-  //   }catch(err){
-  //     console.log(err)
-  //     dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false})
-  //   }finally {
-  //     dispatch('setLoading', false)
-  //   }
-  // }
+  async updateUser({commit , dispatch}, user) {
+    try {
+      dispatch('setLoading', true)
+      const { data } = await http.put('auth/register', user)
+      commit('DEFINE_REGISTER', {
+        user: data.user
+      })
+      dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'})
+    }catch(err){
+      console.log(err)
+      dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false})
+    }finally {
+      dispatch('setLoading', false)
+    }
+	},
+	
+// 	async listHeights({commit, dispatch}, height) {
+// 		try {
+// 			const { data } = await http.get('peso')
+// 			console.log(data)
+// 			// commit('GET_HEIGHT', {
+// 			// 	height: data
+// 			// })
+// 			console.log(data)
+// 		}catch(err) {
+// 			console.log(err)
+// 		}
+// 	}
 }
 
 const getters = {

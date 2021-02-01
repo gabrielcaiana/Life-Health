@@ -44,14 +44,14 @@ export default {
     Header,
     CardsOutline
 	},
-	
+
   computed: {
     ...mapGetters(['user'])
   },
 
   mounted() {
-    this.profile = this.user
-  },
+		this.profile = this.user
+	},
 
   mixins: [age]
 }

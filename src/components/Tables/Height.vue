@@ -61,11 +61,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">
-        Reset
-      </v-btn>
-    </template>
   </v-data-table>
 </template>
 
@@ -90,7 +85,7 @@ export default {
       editedIndex: -1,
       editedItem: {
         data: '',
-        height: 0
+        height: ''
       },
       defaultItem: {
         date: '',
@@ -114,30 +109,19 @@ export default {
     }
   },
 
-  created() {
-    this.initialize()
+  async mounted() {
+    try {
+      const { data } = await this.$http('peso')
+      this.heightItem = data
+    } catch (err) {
+      console.log(err)
+    }
   },
 
   methods: {
-    initialize() {
-      this.heightItem = [
-        {
-          date: '15/01/2020',
-          height: '95,5'
-        },
-        {
-          date: '16/01/2020',
-          height: '94,2'
-        },
-        {
-          date: '17/01/2020',
-          height: '91,5'
-        }
-      ]
-    },
-
     editItem(item) {
-      this.editedIndex = this.heightItem.indexOf(item)
+			this.editedIndex = this.heightItem.indexOf(item)
+			console.log(this.editedIndex)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
@@ -169,11 +153,17 @@ export default {
       })
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.heightItem[this.editedIndex], this.editedItem)
-      } else {
-        this.heightItem.push(this.editedItem)
+    async save() {
+      try {
+				if (this.editedIndex > -1) {
+					await this.$http.put(`peso/${this.editedIndex}`, this.editedItem)
+					Object.assign(this.heightItem[this.editedIndex], this.editedItem)
+				}else {
+					this.heightItem.push(this.editedItem)
+				}
+      
+      } catch (err) {
+        console.log(err)
       }
       this.close()
     }
