@@ -112,7 +112,7 @@ export default {
   async mounted() {
     try {
       const { data } = await this.$http('peso')
-      this.heightItem = data
+			this.heightItem = data
     } catch (err) {
       console.log(err)
     }
@@ -121,8 +121,7 @@ export default {
   methods: {
     editItem(item) {
       this.editedIndex = this.heightItem.indexOf(item)
-      console.log(this.editedIndex)
-      this.editedItem = Object.assign({}, item)
+			this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
@@ -134,8 +133,8 @@ export default {
 
     async deleteItemConfirm() {
       try {
-				await this.$http.delete(`peso/${this.editedIndex + 1}`)
-				this.heightItem.splice(this.editedIndex, 1)
+        await this.$http.delete(`peso/${this.editedItem.id}`)
+        this.heightItem.splice(this.editedIndex, 1)
       } catch (err) {
         console.log()
       }
@@ -159,18 +158,28 @@ export default {
     },
 
     async save() {
-      try {
-        if (this.editedIndex > -1) {
-          await this.$http.put(`peso/${this.editedIndex + 1}`, this.editedItem)
+      if (this.editedIndex > -1) {
+        try {
+					await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
           this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
           Object.assign(this.heightItem[this.editedIndex], this.editedItem)
-        } else {
-          this.heightItem.push(this.editedItem)
+        } catch (err) {
+					console.log(err, this.editedItem.id)
+          this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
         }
-      } catch (err) {
-        console.log(err)
-        this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
+      } else {
+        this.heightItem.push(this.editedItem)
       }
+
+      if (this.editedIndex === -1) {
+        try {
+          await this.$http.post('peso', this.editedItem)
+					this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
       this.close()
     }
   }
