@@ -65,9 +65,9 @@
       <v-col cols="12" sm="6" md="12" class="px-0">
         <p>Genêro</p>
         <v-radio-group v-model="register.gender" name="gender" mandatory>
-          <v-radio label="Masculino" value="male"></v-radio>
-          <v-radio label="Feminino" value="feminine"></v-radio>
-          <v-radio label="Não binário" value="not-binary"></v-radio>
+          <v-radio label="Masculino" value="m"></v-radio>
+          <v-radio label="Feminino" value="f"></v-radio>
+          <v-radio label="Não binário" value="b"></v-radio>
         </v-radio-group>
       </v-col>
 

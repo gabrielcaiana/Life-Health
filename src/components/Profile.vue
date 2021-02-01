@@ -77,12 +77,12 @@
                 <div>Masculino</div>
               </template>
             </v-radio>
-            <v-radio value="feminine">
+            <v-radio value="f">
               <template v-slot:label>
                 <div>Feminino</div>
               </template>
             </v-radio>
-               <v-radio value="n">
+               <v-radio value="b">
               <template v-slot:label>
                 <div>Não binário</div>
               </template>

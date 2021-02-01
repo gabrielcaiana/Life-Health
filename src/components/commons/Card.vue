@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { image } from 'vee-validate/dist/rules'
 export default {
   props: {
     shadow: {
@@ -24,7 +23,6 @@ export default {
       required: true
     },
     subtitle: {
-      type: String,
       required: true
     },
     status: {

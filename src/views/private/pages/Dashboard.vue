@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header title="Olá Gabriel Caiana" subtitle="Idade: 23 anos" />
+    <Header :title="user.name" :subtitle="`Idade: ${age(user.date)} anos`" />
 
     <v-container class="container">
       <v-row>
@@ -15,9 +15,19 @@
 
           <CardsOutline icon="/images/card_alimentos.svg" title="Alimentos" border="border-foods" url="/alimentos" />
 
-          <CardsOutline icon="/images/card_pressao.svg" title="Pressão Arterial" border="border-heart" url="/pressao-arterial" />
+          <CardsOutline
+            icon="/images/card_pressao.svg"
+            title="Pressão Arterial"
+            border="border-heart"
+            url="/pressao-arterial"
+          />
 
-          <CardsOutline icon="/images/card_atividades.svg" title="Atividades Fisicas" border="border-physical-activities" url="/atividades-fisicas" />
+          <CardsOutline
+            icon="/images/card_atividades.svg"
+            title="Atividades Fisicas"
+            border="border-physical-activities"
+            url="/atividades-fisicas"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -27,11 +37,23 @@
 <script>
 import Header from '../../../components/Header'
 import CardsOutline from '../../../components/commons/CardOutline'
+import { mapGetters } from 'vuex'
+import { age } from '@/mixins'
 export default {
   components: {
     Header,
     CardsOutline
-  }
+	},
+	
+  computed: {
+    ...mapGetters(['user'])
+  },
+
+  mounted() {
+    this.profile = this.user
+  },
+
+  mixins: [age]
 }
 </script>
 

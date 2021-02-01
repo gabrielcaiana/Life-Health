@@ -9,7 +9,13 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="items.length -1 == index ? logout() : null"  v-for="(item, index) in items" :key="`${item}-${index}`" :to="item.to" link>
+            <v-list-item
+              @click="items.length - 1 == index ? logout() : null"
+              v-for="(item, index) in items"
+              :key="`${item}-${index}`"
+              :to="item.to"
+              link
+            >
               <v-list-item-title v-text="item.text"></v-list-item-title>
             </v-list-item>
           </v-list>
@@ -29,7 +35,7 @@
           <Card
             :shadow="'imc'"
             :title="'IMC'"
-            :subtitle="'27,1'"
+            :subtitle="imc"
             :status="'Acima do peso'"
             :color="'imc-text'"
             :icon="'/images/imc.svg'"
@@ -73,7 +79,6 @@ export default {
       default: ''
     },
     subtitle: {
-      type: String,
       required: false,
       default: ''
     },
@@ -86,26 +91,26 @@ export default {
   data: () => ({
     btns: [['gabriel Caiana']],
     colors: ['transparent'],
+    imc: '',
     items: [
       {
         text: 'Perfil',
         to: '/perfil'
       },
       {
-        text: 'Sair',
+        text: 'Sair'
       }
     ]
   }),
 
-  mixins: [
-    logoutMixin
-  ],
+  mixins: [logoutMixin],
   computed: {
     ...mapGetters(['user'])
   },
 
   mounted() {
     this.btns = [[this.user.name]]
+		this.imc =  (85 / (1.85 * 1.85) ).toFixed(2) 
   }
 }
 </script>
