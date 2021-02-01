@@ -148,7 +148,8 @@ export default {
       try {
         this.$refs.observer.validate()
         await this.$store.dispatch('registerUser', this.register)
-        return this.$router.push({name: 'dashboard'})
+				return this.$router.push({name: 'login'})
+				console.log(this.profile)
       } catch(err) {
         console.log(err)
       }

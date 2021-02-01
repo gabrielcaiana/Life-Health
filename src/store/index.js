@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 const state = {
 	token: localStorage.getItem('token') || '',
-  user: JSON.parse(localStorage.getItem('user')) || {},
+  user: JSON.parse(localStorage.getItem('user')),
   loading: false,
   snackbar: {
     visible: false,
@@ -16,10 +16,10 @@ const state = {
 }
 
 const mutations = {
-  DEFINE_REGISTER(state, {token, user}) {
-    state.token = token,
-    state.user = user
-  },
+  // DEFINE_REGISTER(state, {token, user}) {
+  //   state.token = token,
+  //   state.user = user
+  // },
 
 	DEFINE_USER_LOGIN(state, {token, user}) {
 		state.token = token,
@@ -72,15 +72,14 @@ const actions = {
 
   async registerUser({commit, dispatch}, user) {
     try {
-      dispatch('setLoading', true)
-      const { data } = await http.post('auth/register', user)
-      commit('DEFINE_REGISTER', {
-        token: data.access_token,
-        user: data.user
-      })
+			dispatch('setLoading', true)
+			await http.post('auth/register', user)
+      // const { data } = await http.post('auth/register', user)
+      // commit('DEFINE_REGISTER', {
+      //   token: data.access_token,
+      //   user: data.user
+      // })
       dispatch('setSnackBar', {msg: 'Usuário Cadastrado com Sucesso!'})
-      localStorage.setItem('token', data.access_token)
-      localStorage.setItem('user', JSON.stringify(data.user))
     }catch(err) {
       console.log(err)
       dispatch('setSnackBar', {msg: 'Falha ao cadastrar o usuário', success: false})
@@ -89,21 +88,21 @@ const actions = {
     }
   },
 
-  async updateUser({commit , dispatch}, user) {
-    try {
-      dispatch('setLoading', true)
-      const { data } = await http.put('auth/register', user)
-      commit('DEFINE_REGISTER', {
-        user: data.user
-      })
-      dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'})
-    }catch(err){
-      console.log(err)
-      dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false})
-    }finally {
-      dispatch('setLoading', false)
-    }
-  }
+  // async updateUser({commit , dispatch}, user) {
+  //   try {
+  //     dispatch('setLoading', true)
+  //     const { data } = await http.put('auth/register', user)
+  //     commit('DEFINE_REGISTER', {
+  //       user: data.user
+  //     })
+  //     dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'})
+  //   }catch(err){
+  //     console.log(err)
+  //     dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false})
+  //   }finally {
+  //     dispatch('setLoading', false)
+  //   }
+  // }
 }
 
 const getters = {
