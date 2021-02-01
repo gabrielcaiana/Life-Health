@@ -157,13 +157,15 @@ export default {
       try {
 				if (this.editedIndex > -1) {
 					await this.$http.put(`peso/${this.editedIndex}`, this.editedItem)
+					this.$store.dispatch("setSnackBar", {msg: 'Peso alterado com sucesso'})
 					Object.assign(this.heightItem[this.editedIndex], this.editedItem)
 				}else {
 					this.heightItem.push(this.editedItem)
 				}
       
       } catch (err) {
-        console.log(err)
+				console.log(err)
+				this.$store.dispatch("setSnackBar", {msg: 'Falha ao alterar o peso', success: false})
       }
       this.close()
     }
