@@ -129,7 +129,7 @@
         </v-col> -->
       <!-- </v-row> -->
 
-      <v-btn class="mr-4 btn primary mt-4" type="submit" depressed>
+      <v-btn @click="updateUser" class="mr-4 btn primary mt-4" type="submit" depressed>
         Salvar
       </v-btn>
 
@@ -191,6 +191,14 @@ export default {
     submit() {
       this.$refs.observer.validate()
       console.log(this.register)
+    },
+
+    async updateUser() {
+      try{
+        await this.$store.dispatch('updateUser', this.user)
+      }catch(err) {
+        console.log(err)
+      }
     }
   },
 

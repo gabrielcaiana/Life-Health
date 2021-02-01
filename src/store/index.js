@@ -87,6 +87,22 @@ const actions = {
     } finally {
       dispatch('setLoading', false)
     }
+  },
+
+  async updateUser({commit , dispatch}, user) {
+    try {
+      dispatch('setLoading', true)
+      const { data } = await http.put('auth/register', user)
+      commit('DEFINE_REGISTER', {
+        user: data.user
+      })
+      dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'})
+    }catch(err){
+      console.log(err)
+      dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false})
+    }finally {
+      dispatch('setLoading', false)
+    }
   }
 }
 
