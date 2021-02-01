@@ -120,8 +120,8 @@ export default {
 
   methods: {
     editItem(item) {
-			this.editedIndex = this.heightItem.indexOf(item)
-			console.log(this.editedIndex)
+      this.editedIndex = this.heightItem.indexOf(item)
+      console.log(this.editedIndex)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
@@ -132,8 +132,13 @@ export default {
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.heightItem.splice(this.editedIndex, 1)
+    async deleteItemConfirm() {
+      try {
+				await this.$http.delete(`peso/${this.editedIndex + 1}`)
+				this.heightItem.splice(this.editedIndex, 1)
+      } catch (err) {
+        console.log()
+      }
       this.closeDelete()
     },
 
@@ -155,17 +160,16 @@ export default {
 
     async save() {
       try {
-				if (this.editedIndex > -1) {
-					await this.$http.put(`peso/${this.editedIndex}`, this.editedItem)
-					this.$store.dispatch("setSnackBar", {msg: 'Peso alterado com sucesso'})
-					Object.assign(this.heightItem[this.editedIndex], this.editedItem)
-				}else {
-					this.heightItem.push(this.editedItem)
-				}
-      
+        if (this.editedIndex > -1) {
+          await this.$http.put(`peso/${this.editedIndex + 1}`, this.editedItem)
+          this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
+          Object.assign(this.heightItem[this.editedIndex], this.editedItem)
+        } else {
+          this.heightItem.push(this.editedItem)
+        }
       } catch (err) {
-				console.log(err)
-				this.$store.dispatch("setSnackBar", {msg: 'Falha ao alterar o peso', success: false})
+        console.log(err)
+        this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
       }
       this.close()
     }
