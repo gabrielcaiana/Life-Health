@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="heightItem" sort-by="calories" class="elevation-1">
+  <v-data-table :headers="headers" :items="heightItem" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Lista de Pesos</v-toolbar-title>
@@ -34,7 +34,7 @@
               <v-btn color="gray darken-1" text @click="close">
                 Cancelar
               </v-btn>
-              <v-btn color="darken-1" :color="color" text @click="save">
+              <v-btn :color="color" text @click="save">
                 Salvar
               </v-btn>
             </v-card-actions>
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -84,17 +85,19 @@ export default {
       heightItem: [],
       editedIndex: -1,
       editedItem: {
-        data: '',
-        height: ''
+        date: '',
+        height: '',
+        userId: ''
       },
       defaultItem: {
         date: '',
-        height: 0
+        height: ''
       }
     }
   },
 
   computed: {
+    ...mapGetters(['user']),
     formTitle() {
       return this.editedIndex === -1 ? 'Cadastrar peso' : 'Editar'
     }
@@ -109,19 +112,23 @@ export default {
     }
   },
 
-  async mounted() {
-    try {
-      const { data } = await this.$http('peso')
-			this.heightItem = data
-    } catch (err) {
-      console.log(err)
-    }
+  mounted() {
+    this.initialize()
   },
 
   methods: {
+    async initialize() {
+      try {
+        const { data } = await this.$http('peso')
+        this.heightItem = data
+      } catch (err) {
+        console.log(err)
+      }
+    },
+
     editItem(item) {
       this.editedIndex = this.heightItem.indexOf(item)
-			this.editedItem = Object.assign({}, item)
+      this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
@@ -136,7 +143,7 @@ export default {
         await this.$http.delete(`peso/${this.editedItem.id}`)
         this.heightItem.splice(this.editedIndex, 1)
       } catch (err) {
-        console.log()
+        console.log(err)
       }
       this.closeDelete()
     },
@@ -160,11 +167,12 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         try {
-					await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
+          await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
           this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
           Object.assign(this.heightItem[this.editedIndex], this.editedItem)
+          this.initialize()
         } catch (err) {
-					console.log(err, this.editedItem.id)
+          console.log(err)
           this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
         }
       } else {
@@ -173,14 +181,16 @@ export default {
 
       if (this.editedIndex === -1) {
         try {
-          await this.$http.post('peso', this.editedItem)
-					this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
+          const { data } = await this.$http.post('peso', this.editedItem)
+          this.editedItem = data
+          this.editedItem.userId = this.user.id
+          this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
+          this.close()
+          this.initialize()
         } catch (err) {
           console.log(err)
         }
       }
-
-      this.close()
     }
   }
 }

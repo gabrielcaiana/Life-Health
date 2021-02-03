@@ -47,12 +47,8 @@ export default {
 
   computed: {
     ...mapGetters(['user'])
-  },
-
-  mounted() {
-		this.profile = this.user
 	},
-
+	
   mixins: [age]
 }
 </script>
