@@ -68,6 +68,7 @@
 import { logoutMixin } from '@/mixins'
 import Card from '../components/commons/Card'
 import { mapGetters } from 'vuex'
+
 export default {
   components: {
     Card
@@ -88,20 +89,24 @@ export default {
       default: ''
     }
   },
-  data: () => ({
-    btns: [['gabriel Caiana']],
-    colors: ['transparent'],
-    imc: '',
-    items: [
-      {
-        text: 'Perfil',
-        to: '/perfil'
-      },
-      {
-        text: 'Sair'
-      }
-    ]
-  }),
+  data: function() {
+    return {
+      btns: [['gabriel Caiana']],
+      colors: ['transparent'],
+			imc: '',
+			lastWeight: null,
+			userHeight: null,
+      items: [
+        {
+          text: 'Perfil',
+          to: '/perfil'
+        },
+        {
+          text: 'Sair'
+        }
+      ]
+    }
+  },
 
   mixins: [logoutMixin],
   computed: {
@@ -110,7 +115,37 @@ export default {
 
   mounted() {
     this.btns = [[this.user.name]]
-		this.imc =  (85 / (1.85 * 1.85) ).toFixed(2) 
+    this.initialize()
+  },
+
+  methods: {
+    calcIMC(peso, altura) {
+      let caculaIMC = (peso / (altura * altura))
+			this.imc = caculaIMC.toFixed(2)
+			console.log(this.imc)
+    },
+
+    async initialize() {
+      const user = this.user
+      try {
+        const { data } = await this.$http('peso')
+        data.map(item => {
+          if (item.userId === user.id) {
+						this.lastWeight = item.height
+						this.userHeight = user.height
+          }
+				})
+
+				let height = this.userHeight.replace(/,/g, ".")
+				let weight = this.lastWeight.replace(/,/g, ".")
+
+				this.calcIMC(parseFloat(weight), parseFloat(height))
+
+				console.log(height, weight)
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 }
 </script>
