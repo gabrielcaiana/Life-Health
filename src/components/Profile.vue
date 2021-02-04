@@ -190,7 +190,6 @@ export default {
   methods: {
     submit() {
       this.$refs.observer.validate()
-      console.log(this.register)
     },
 
     async updateUser() {

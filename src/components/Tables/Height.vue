@@ -118,9 +118,14 @@ export default {
 
   methods: {
     async initialize() {
+      const user = this.user.id
       try {
         const { data } = await this.$http('peso')
-        this.heightItem = data
+        data.map(item => {
+          if (item.userId === user) {
+            this.heightItem.push(item)
+          }
+        })
       } catch (err) {
         console.log(err)
       }
@@ -170,7 +175,7 @@ export default {
           await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
           this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
           Object.assign(this.heightItem[this.editedIndex], this.editedItem)
-          this.initialize()
+          this.close()
         } catch (err) {
           console.log(err)
           this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
@@ -180,15 +185,16 @@ export default {
       }
 
       if (this.editedIndex === -1) {
+				this.heightItem = []
         try {
-          const { data } = await this.$http.post('peso', this.editedItem)
-          this.editedItem = data
-          this.editedItem.userId = this.user.id
+          await this.$http.post('peso', this.editedItem, (this.editedItem.userId = this.user.id))
           this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
           this.close()
-          this.initialize()
+					this.initialize()
         } catch (err) {
           console.log(err)
+          this.$store.dispatch('setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
+          this.close()
         }
       }
     }
