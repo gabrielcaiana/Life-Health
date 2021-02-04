@@ -36,7 +36,7 @@
             :shadow="'imc'"
             :title="'IMC'"
             :subtitle="imc"
-            :status="'Acima do peso'"
+            :status="`Verificando...`"
             :color="'imc-text'"
             :icon="'/images/imc.svg'"
           />
@@ -44,8 +44,8 @@
           <Card
             :shadow="'height'"
             :title="'Peso'"
-            :subtitle="'93,4 Kg'"
-            :status="'Perdeu 5KG'"
+            :subtitle="`${lastWeight}Kg`"
+            :status="`Verificando...`"
             :color="'height-text'"
             :icon="'/images/height.svg'"
           />
@@ -53,8 +53,8 @@
           <Card
             :shadow="'heart'"
             :title="'Pressão Arterial'"
-            :subtitle="'160/80'"
-            :status="'23/05/2020'"
+            :subtitle="`Verificando...`"
+            :status="`Verificando...`"
             :color="'heart-text'"
             :icon="'/images/heart.svg'"
           />
