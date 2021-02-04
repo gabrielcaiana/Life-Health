@@ -34,7 +34,7 @@
               <v-btn color="gray darken-1" text @click="close">
                 Cancelar
               </v-btn>
-              <v-btn :color="color" text @click="save">
+              <v-btn :color="color" text @click="submit">
                 Salvar
               </v-btn>
             </v-card-actions>
@@ -170,32 +170,40 @@ export default {
     },
 
     async save() {
+      try {
+        await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
+        this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
+        Object.assign(this.heightItem[this.editedIndex], this.editedItem)
+        this.close()
+      } catch (err) {
+        console.log(err)
+        this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
+      }
+    },
+
+    async edit() {
+      this.heightItem = []
+      try {
+        await this.$http.post('peso', this.editedItem, (this.editedItem.userId = this.user.id))
+        this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
+        this.close()
+        this.initialize()
+      } catch (err) {
+        console.log(err)
+        this.$store.dispatch('setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
+        this.close()
+      }
+    },
+
+    async submit() {
       if (this.editedIndex > -1) {
-        try {
-          await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
-          this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
-          Object.assign(this.heightItem[this.editedIndex], this.editedItem)
-          this.close()
-        } catch (err) {
-          console.log(err)
-          this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
-        }
+        this.save()
       } else {
         this.heightItem.push(this.editedItem)
       }
 
       if (this.editedIndex === -1) {
-        this.heightItem = []
-        try {
-          await this.$http.post('peso', this.editedItem, (this.editedItem.userId = this.user.id))
-          this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
-          this.close()
-          this.initialize()
-        } catch (err) {
-          console.log(err)
-          this.$store.dispatch('setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
-          this.close()
-        }
+        this.edit()
       }
     }
   }
