@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 
 const http = axios.create({
-  baseURL: 'http://localhost:5000/',
+  baseURL: 'https://life-health-api.herokuapp.com/',
   headers: {
 		"Accept": "application/json",
 		"Content": "application/json"

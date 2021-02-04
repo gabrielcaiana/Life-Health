@@ -185,12 +185,12 @@ export default {
       }
 
       if (this.editedIndex === -1) {
-				this.heightItem = []
+        this.heightItem = []
         try {
           await this.$http.post('peso', this.editedItem, (this.editedItem.userId = this.user.id))
           this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
           this.close()
-					this.initialize()
+          this.initialize()
         } catch (err) {
           console.log(err)
           this.$store.dispatch('setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
