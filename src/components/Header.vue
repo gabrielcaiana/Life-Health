@@ -44,8 +44,8 @@
           <Card
             :shadow="'height'"
             :title="'Peso'"
-            :subtitle="`${lastWeight}Kg`"
-            :status="`Verificando...`"
+            :subtitle="`${ this.lastWeight != null ? lastWeight + 'Kg' : 'Vazio'}`"
+            :status="statusIMC"
             :color="'height-text'"
             :icon="'/images/height.svg'"
           />
@@ -94,6 +94,7 @@ export default {
       btns: [['gabriel Caiana']],
       colors: ['transparent'],
 			imc: '',
+			statusIMC: '',
 			lastWeight: null,
 			userHeight: null,
       items: [
@@ -122,7 +123,22 @@ export default {
     calcIMC(peso, altura) {
       let caculaIMC = (peso / (altura * altura))
 			this.imc = caculaIMC.toFixed(2)
-			console.log(this.imc)
+
+			if(caculaIMC <= 16.9) {
+				this.statusIMC = `Muito abaixo do peso`
+			} else if(this.imc >= 17 && this.imc <= 18.4) {
+				this.statusIMC = `Abaixo do peso`
+			} else if(this.imc >= 18.5 && this.imc <= 24.9) {
+				this.statusIMC = `Peso normal`
+			}else if(this.imc >= 25 && this.imc <= 29.9) {
+				this.statusIMC = `Acima do peso`
+			}else if(this.imc >= 30 && this.imc <= 34.9) {
+				this.statusIMC = `Obesidade grau 1`
+			}else if(this.imc >= 35 && this.imc <= 40) {
+				this.statusIMC = `Obesidade grau 2`
+			}else if(this.imc >= 40) {
+				this.statusIMC = `Obesidade grau 3`
+			}
     },
 
     async initialize() {
@@ -135,13 +151,10 @@ export default {
 						this.userHeight = user.height
           }
 				})
-
 				let height = this.userHeight.replace(/,/g, ".")
 				let weight = this.lastWeight.replace(/,/g, ".")
-
 				this.calcIMC(parseFloat(weight), parseFloat(height))
 
-				console.log(height, weight)
       } catch (err) {
         console.log(err)
       }
