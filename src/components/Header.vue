@@ -36,7 +36,7 @@
             :shadow="'imc'"
             :title="'IMC'"
             :subtitle="imc"
-            :status="`Verificando...`"
+            :status="statusIMC"
             :color="'imc-text'"
             :icon="'/images/imc.svg'"
           />
@@ -45,7 +45,7 @@
             :shadow="'height'"
             :title="'Peso'"
             :subtitle="`${ this.lastWeight != null ? lastWeight + 'Kg' : 'Vazio'}`"
-            :status="statusIMC"
+            :status="`registrado em: ${lastDateWeight}`"
             :color="'height-text'"
             :icon="'/images/height.svg'"
           />
@@ -96,6 +96,7 @@ export default {
 			imc: '',
 			statusIMC: '',
 			lastWeight: null,
+			lastDateWeight: null,
 			userHeight: null,
       items: [
         {
@@ -148,6 +149,7 @@ export default {
         data.map(item => {
           if (item.userId === user.id) {
 						this.lastWeight = item.height
+						this.lastDateWeight = item.date
 						this.userHeight = user.height
           }
 				})
