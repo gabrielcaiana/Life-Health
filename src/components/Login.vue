@@ -72,7 +72,7 @@ export default {
     async efetuarLogin() {
       try {
         this.$refs.observer.validate()
-        await this.$store.dispatch('efetuarLogin', this.user)
+        await this.$store.dispatch('user/efetuarLogin', this.user)
         return this.$router.push({ name: 'dashboard' })
       } catch (err) {
         console.log(err + 'erro aqui')

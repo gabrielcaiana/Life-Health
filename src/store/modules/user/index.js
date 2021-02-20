@@ -1,5 +1,7 @@
 import http from '../../../http'
 
+export const namespaced = true;
+
 export const state = {
 	user: JSON.parse(localStorage.getItem('user')),
 	token: localStorage.getItem('token') || '',
@@ -22,49 +24,60 @@ export const mutations = {
 export const actions = {
 	async efetuarLogin({ commit, dispatch }, user) {
     try {
-      dispatch('setLoading', true, {root: true})
+      dispatch('loading/setLoading', true, {root: true})
       const { data } = await http.post('auth/login', user)
       commit("DEFINE_USER_LOGIN",{
         token: data.access_token,
         user: data.user
       })
-      dispatch('setSnackBar', {msg: 'Login Efetuado com sucesso'}, {root: true})
+      dispatch('snackbar/setSnackBar', {msg: 'Login Efetuado com sucesso!'}, {root: true})
       localStorage.setItem('user', JSON.stringify(data.user))
       localStorage.setItem('token', data.access_token)
     } catch(err) {
-      dispatch('setSnackBar', {msg: 'Email ou senha incorretos', success: false}, {root: true})
+      dispatch('snackbar/setSnackBar', {msg: 'Email ou senha incorretos', success: false}, {root: true})
     } finally {
-      dispatch('setLoading', false, {root: true})
+      dispatch('loading/setLoading', false, {root: true})
     }
-		// debugger;
   },
+
+	efetuarLogout({ commit, dispatch }) {
+		try{
+			dispatch('loading/setLoading', true, {root: true})
+			commit('DEFINE_LOGOUT')
+			dispatch('snackbar/setSnackBar', {msg: 'Logout realizado com sucesso!'}, {root: true})
+		}catch {
+			dispatch('snackbar/setSnackBar', {msg: 'Falha ao realizar o logout!'}, {root: true})
+		} finally {
+			dispatch('loading/setLoading', false, {root: true})
+		}
+	},
 
   async registerUser({commit, dispatch}, user) {
     try {
-			dispatch('setLoading', true, {root: true})
+			dispatch('loading/setLoading', true, {root: true})
 			await http.post('auth/register', user)
-      dispatch('setSnackBar', {msg: 'Usuário Cadastrado com Sucesso!'})
+      dispatch('snackbar/setSnackBar', {msg: 'Usuário Cadastrado com Sucesso!'})
     }catch(err) {
       console.log(err)
-      dispatch('setSnackBar', {msg: 'Falha ao cadastrar o usuário', success: false}, {root: true})
+      dispatch('snackbar/setSnackBar', {msg: 'Falha ao cadastrar o usuário', success: false}, {root: true})
     } finally {
-      dispatch('setLoading', false, {root: true})
+      dispatch('loading/setLoading', false, {root: true})
     }
   },
 
   async updateUser({commit , dispatch}, user) {
     try {
-      dispatch('setLoading', true, {root: true})
+      dispatch('loading/setLoading', true, {root: true})
       const { data } = await http.put('auth/register', user)
       commit('DEFINE_REGISTER', {
         user: data.user
       })
-      dispatch('setSnackBar', {msg: 'Dados atualizados com sucesso!'}, {root: true})
+      dispatch('snackbar/setSnackBar', {msg: 'Dados atualizados com sucesso!'}, {root: true})
     }catch(err){
       console.log(err)
-      dispatch('setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false}, {root: true})
+      dispatch('snackbar/setSnackBar', {msg: 'Falha ao atualizar os dados do usuário', success: false}, {root: true})
     }finally {
-      dispatch('setLoading', false, {root: true})
+      dispatch('loading/setLoading', false, {root: true})
     }
 	},
 }

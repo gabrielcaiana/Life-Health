@@ -1,3 +1,5 @@
+export const namespaced = true;
+
 export const state = {
 	loading: false
 }

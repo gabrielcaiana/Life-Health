@@ -194,7 +194,7 @@ export default {
 
     async updateUser() {
       try{
-        await this.$store.dispatch('updateUser', this.user)
+        await this.$store.dispatch('user/updateUser', this.user)
       }catch(err) {
         console.log(err)
       }
@@ -202,7 +202,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters('user', ['user'])
   },
 
   mounted() {

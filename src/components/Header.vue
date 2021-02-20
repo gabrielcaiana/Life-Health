@@ -112,7 +112,7 @@ export default {
 
   mixins: [logoutMixin],
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters('user', ['user'])
   },
 
   mounted() {

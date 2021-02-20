@@ -46,7 +46,7 @@ export default {
 	},
 
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters('user', ['user'])
 	},
 	
   mixins: [age]

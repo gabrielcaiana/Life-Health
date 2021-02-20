@@ -8,7 +8,7 @@
     <v-container class="height">
       <v-row>
         <v-col cols="12">
-          <Height />
+          <Weight />
         </v-col>
       </v-row>
     </v-container>
@@ -17,11 +17,11 @@
 
 <script>
 import Header from '../../../components/Header'
-import Height from '../../../components/Tables/Height'
+import Weight from '../../../components/Tables/Weight'
 export default {
   components: {
     Header,
-    Height
+    Weight
   }
 }
 </script>

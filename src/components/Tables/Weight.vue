@@ -97,7 +97,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters('user', ['user']),
     formTitle() {
       return this.editedIndex === -1 ? 'Cadastrar peso' : 'Editar'
     }
@@ -172,12 +172,12 @@ export default {
     async save() {
       try {
         await this.$http.put(`peso/${this.editedItem.id}`, this.editedItem)
-        this.$store.dispatch('setSnackBar', { msg: 'Peso alterado com sucesso' })
+        this.$store.dispatch('snackbar/setSnackBar', { msg: 'Peso alterado com sucesso' })
         Object.assign(this.heightItem[this.editedIndex], this.editedItem)
         this.close()
       } catch (err) {
         console.log(err)
-        this.$store.dispatch('setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
+        this.$store.dispatch('snackbar/setSnackBar', { msg: 'Falha ao alterar o peso', success: false })
       }
     },
 
@@ -185,12 +185,12 @@ export default {
       this.heightItem = []
       try {
         await this.$http.post('peso', this.editedItem, (this.editedItem.userId = this.user.id))
-        this.$store.dispatch('setSnackBar', { msg: 'Peso gravado com sucesso' })
+        this.$store.dispatch('snackbar/setSnackBar', { msg: 'Peso gravado com sucesso' })
         this.close()
         this.initialize()
       } catch (err) {
         console.log(err)
-        this.$store.dispatch('setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
+        this.$store.dispatch('snackbar/setSnackBar', { msg: 'Erro ao gravar o peso', success: false })
         this.close()
       }
     },
