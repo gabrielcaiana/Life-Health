@@ -75,7 +75,7 @@ export default {
         await this.$store.dispatch('efetuarLogin', this.user)
         return this.$router.push({ name: 'dashboard' })
       } catch (err) {
-        console.log(err)
+        console.log(err + 'erro aqui')
       }
     }
   }

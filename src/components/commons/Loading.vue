@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center" v-if="visible">
-    <v-dialog v-model="visible" persistent max-width="200">
+    <v-dialog v-model="visible.loading" persistent max-width="200">
       <v-card class="card d-flex flex-column align-center">
         <v-progress-circular :width="4" color="green" indeterminate></v-progress-circular>
       </v-card>
@@ -12,10 +12,10 @@
 export default {
   props: {
     visible: {
-      type: Boolean,
+      type: Object,
       default: false
     }
-  }
+  },
 }
 </script>
 

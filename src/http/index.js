@@ -1,5 +1,5 @@
 import axios from 'axios'
-import store from '@/store'
+import { state } from '../store/modules/user/index'
 
 const http = axios.create({
   baseURL: 'https://life-health-api.herokuapp.com/',
@@ -11,7 +11,7 @@ const http = axios.create({
 
 http.interceptors.request.use(
   config => {
-    const token = store.state.token
+    const token = state.token
     if (token) {
 			config.headers.Authorization = `Bearer ${token}`
 		}

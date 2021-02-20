@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import store from '@/store'
+import { state } from '../store/modules/user/index'
 import http from '@/http'
 
 Vue.use(Router)
@@ -15,7 +15,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-	if(!to.meta.public && !store.state.token) {
+	if(!to.meta.public && !state.token) {
 		return next({path: '/'})
 	}else {
 		next()

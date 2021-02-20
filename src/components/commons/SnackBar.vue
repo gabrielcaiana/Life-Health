@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-snackbar v-model="configSnack.visible" :color="configSnack.color">
-      {{ configSnack.msg }}
+    <v-snackbar v-model="configSnack.snackbar.visible" :color="configSnack.snackbar.color">
+      {{ configSnack.snackbar.msg }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn color="#4acf8c" text v-bind="attrs" @click="configSnack.visible = false">
+        <v-btn color="#4acf8c" text v-bind="attrs" @click="configSnack.snackbar.visible = false">
           Fechar
         </v-btn>
       </template>
@@ -14,6 +14,10 @@
 
 <script>
   export default {
-    props:['configSnack']
+    props: {
+			configSnack: {
+				type: Object
+			}
+		},
   }
 </script>
